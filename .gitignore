@@ -34,6 +34,6 @@ Results/*.jpg
 blended_result.jpg
 
 # Keep example files
-!Faces/John_Cena.jpg
+!Faces/MBB.png
 !Faces/The_Rock.jpg
 !Results/Example.png

@@ -6,7 +6,7 @@ A Python face morphing tool that creates seamless face composites by blending fa
 
 | Image 1 | Image 2 | Result |
 |:-------:|:-------:|:------:|
-| ![John Cena](Faces/John_Cena.jpg) | ![The Rock](Faces/The_Rock.jpg) | ![Blended Result](Results/Example.png) |
+| ![MBB](Faces/MBB.png) | ![The Rock](Faces/The_Rock.jpg) | ![Blended Result](Results/Example.png) |
 
 ## Features
 
