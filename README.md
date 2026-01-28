@@ -1,4 +1,4 @@
-# HKSAFaceBlend
+# FaceBlend
 
 A Python face morphing tool that creates seamless face composites by blending facial features from two images. Uses MediaPipe for 468-point facial landmark detection and OpenCV for image processing.
 
