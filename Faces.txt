@@ -1,38 +1,5 @@
-Natalie, Florence1
-Kyler, Jacky
-Jessica, Nathan
-Patrice, Ellia
-Akshay, IsaacLeung
-Kristy, Megan
-Mitchell, Aidan
-Megan, Oscar
-Angela, Bonnie
-Joe, Henry
-Angelina, Leanne
-Michelle, Samuel
-Angelina, Samuel
-Catherine, Yuki
-Tiffany, Patty
-IsaacLee, Mitchell
-Leo, Leanne
-Eonne, Kristy
-Henry, Vicky
-Sewon, Amy
-Justin, Claudia
-Zach, Jeremy
-Claudia, Megan
-Raymond, Ayden
-Alex, Steve
-Bella, Aurdrey
-Mia, Marcus
-Chloe, Aidan
-Michelle, Audrey
-Florence2, Yuki
-Doris, Angela
-Danny, Natalie
-Olivia, Patrice
-Zoe, Jeremy
-Samuel, Audrey
-Eonne, Zach
-Regine, Mitchell
-Justin, Hannah
+# Face pairs to blend (one pair per line)
+# Format: Name1, Name2
+# Example:
+# Alice, Bob
+# Person1, Person2

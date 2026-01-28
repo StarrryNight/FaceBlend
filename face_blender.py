@@ -4,6 +4,8 @@ Face Blender - Face Morphing Tool
 Creates seamless face composites from two images.
 """
 
+__version__ = "1.0.0"
+
 import cv2
 import numpy as np
 import argparse
@@ -14,8 +16,11 @@ from pathlib import Path
 try:
     import mediapipe as mp
     MEDIAPIPE_AVAILABLE = True
+    # Check which API version is available
+    MEDIAPIPE_LEGACY = hasattr(mp, 'solutions')
 except ImportError:
     MEDIAPIPE_AVAILABLE = False
+    MEDIAPIPE_LEGACY = False
 
 # ============================================================================
 # CONFIGURATION
@@ -244,26 +249,62 @@ def preprocess_image(img, landmarks, standard_size=600):
 
 def get_landmarks(image):
     """Get 468 facial landmarks using MediaPipe."""
-    mp_face_mesh = mp.solutions.face_mesh
-    
-    with mp_face_mesh.FaceMesh(
-        static_image_mode=True,
-        max_num_faces=1,
-        refine_landmarks=True,
-        min_detection_confidence=0.5
-    ) as face_mesh:
-        rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        results = face_mesh.process(rgb)
-        
-        if not results.multi_face_landmarks:
-            return None
-        
-        h, w = image.shape[:2]
-        landmarks = []
-        for lm in results.multi_face_landmarks[0].landmark:
-            landmarks.append((lm.x * w, lm.y * h))
-        
-        return np.array(landmarks, dtype=np.float32)
+    h, w = image.shape[:2]
+    rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+
+    if MEDIAPIPE_LEGACY:
+        # Use legacy solutions API (mediapipe < 0.10.21)
+        mp_face_mesh = mp.solutions.face_mesh
+        with mp_face_mesh.FaceMesh(
+            static_image_mode=True,
+            max_num_faces=1,
+            refine_landmarks=True,
+            min_detection_confidence=0.5
+        ) as face_mesh:
+            results = face_mesh.process(rgb)
+
+            if not results.multi_face_landmarks:
+                return None
+
+            landmarks = []
+            for lm in results.multi_face_landmarks[0].landmark:
+                landmarks.append((lm.x * w, lm.y * h))
+
+            return np.array(landmarks, dtype=np.float32)
+    else:
+        # Use new tasks API (mediapipe >= 0.10.21)
+        from mediapipe.tasks import python as mp_python
+        from mediapipe.tasks.python import vision
+        from mediapipe import Image as MPImage
+        import urllib.request
+        import tempfile
+
+        # Download model if needed
+        model_path = Path(tempfile.gettempdir()) / "face_landmarker.task"
+        if not model_path.exists():
+            model_url = "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task"
+            urllib.request.urlretrieve(model_url, model_path)
+
+        base_options = mp_python.BaseOptions(model_asset_path=str(model_path))
+        options = vision.FaceLandmarkerOptions(
+            base_options=base_options,
+            output_face_blendshapes=False,
+            output_facial_transformation_matrixes=False,
+            num_faces=1
+        )
+
+        with vision.FaceLandmarker.create_from_options(options) as landmarker:
+            mp_image = MPImage(image_format=mp.ImageFormat.SRGB, data=rgb)
+            result = landmarker.detect(mp_image)
+
+            if not result.face_landmarks:
+                return None
+
+            landmarks = []
+            for lm in result.face_landmarks[0]:
+                landmarks.append((lm.x * w, lm.y * h))
+
+            return np.array(landmarks, dtype=np.float32)
 
 
 def get_eye_centers(landmarks):
