@@ -2,6 +2,12 @@
 
 A Python face morphing tool that creates seamless face composites by blending facial features from two images. Uses MediaPipe for 468-point facial landmark detection and OpenCV for image processing.
 
+## Example
+
+| Image 1 | Image 2 | Result |
+|:-------:|:-------:|:------:|
+| ![John Cena](Faces/John_Cena.jpg) | ![The Rock](Faces/The_Rock.jpg) | ![Blended Result](Results/Example.png) |
+
 ## Features
 
 - Automatic face detection and alignment
@@ -29,7 +35,7 @@ python face_blender.py person1.png person2.png -o result.jpg
 
 ### Batch Processing
 
-1. Add face images (PNG) to the `Faces/` directory
+1. Add face images (PNG/JPG) to the `Faces/` directory
 2. Edit `Faces.txt` with pairs to blend:
    ```
    Alice, Bob
@@ -64,7 +70,7 @@ HKSAFaceBlend/
 ├── batch_blend.py    # Batch processing script
 ├── requirements.txt  # Python dependencies
 ├── Faces.txt         # Face pairs configuration
-├── Faces/            # Input images (PNG)
+├── Faces/            # Input images (PNG/JPG)
 └── Results/          # Output images
 ```
 
