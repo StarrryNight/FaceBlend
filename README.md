@@ -20,8 +20,8 @@ A Python face morphing tool that creates seamless face composites by blending fa
 ## Installation
 
 ```bash
-git clone https://github.com/yourusername/HKSAFaceBlend.git
-cd HKSAFaceBlend
+git clone https://github.com/yourusername/FaceBlend.git
+cd FaceBlend
 pip install -r requirements.txt
 ```
 
@@ -65,7 +65,7 @@ Results are saved to `Results/`.
 ## Project Structure
 
 ```
-HKSAFaceBlend/
+FaceBlend/
 ├── face_blender.py   # Core morphing engine
 ├── batch_blend.py    # Batch processing script
 ├── requirements.txt  # Python dependencies
